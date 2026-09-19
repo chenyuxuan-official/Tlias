@@ -6,13 +6,13 @@
 
 ```
 Tlias/
-├── tlias_backend/    # Spring Boot 后端（端口 8080）
-└── tlias_frontend/   # Vue 3 前端（端口 5173）
+├── backend/     # Spring Boot 后端（端口 8080）
+└── frontend/    # Vue 3 前端（端口 5173）
 ```
 
 ## 技术栈
 
-**后端** `tlias_backend/`
+**后端** `backend/`
 
 - Spring Boot 4.1.0（WebMVC）+ JDK 17
 - MyBatis + PageHelper（分页）
@@ -22,7 +22,7 @@ Tlias/
 - 阿里云 OSS 文件上传
 - Maven 构建
 
-**前端** `tlias_frontend/`
+**前端** `frontend/`
 
 - Vue 3 + Vite 8
 - Vue Router 4
@@ -42,7 +42,7 @@ Tlias/
 仓库中的 `application.properties` 只保留占位符，真实密码放在**不会提交**的 `application-dev.properties`：
 
 ```bash
-cd tlias_backend/src/main/resources
+cd backend/src/main/resources
 cp application-dev.properties.example application-dev.properties
 # 编辑 application-dev.properties，填入自己的 MySQL 用户名/密码
 ```
@@ -58,7 +58,7 @@ $env:OSS_ACCESS_KEY_SECRET="你的AccessKeySecret"
 ### 3. 启动后端
 
 ```bash
-cd tlias_backend
+cd backend
 mvn spring-boot:run     # 或 ./mvnw spring-boot:run
 # 启动后访问 http://localhost:8080
 ```
@@ -66,7 +66,7 @@ mvn spring-boot:run     # 或 ./mvnw spring-boot:run
 ### 4. 启动前端
 
 ```bash
-cd tlias_frontend
+cd frontend
 npm install
 npm run dev
 # 启动后访问 http://localhost:5173
