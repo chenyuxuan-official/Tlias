@@ -1,0 +1,4 @@
+# 模板文件（会提交到仓库）：复制为 application-dev.properties 后填入自己的本地密码
+# cp application-dev.properties.example application-dev.properties
+spring.datasource.username=root
+spring.datasource.password=你的MySQL密码

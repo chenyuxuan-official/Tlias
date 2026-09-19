@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shanfu.app.mapper.EmpExprMapper">
+
+    <!-- 根据员工 ID 查询工作经历列表 -->
+    <select id="selectByEmpId" resultType="com.shanfu.app.pojo.EmpExpr">
+        select id,
+               emp_id,
+               begin,
+               end,
+               company,
+               job
+        from emp_expr
+        where emp_id = #{empId}
+    </select>
+
+    <!-- 根据员工 ID 批量删除工作经历 -->
+    <delete id="deleteByEmpId">
+        delete from emp_expr where emp_id = #{empId}
+    </delete>
+
+    <!-- 批量新增工作经历 -->
+    <insert id="insertBatch">
+        insert into emp_expr (emp_id, begin, end, company, job)
+        values
+        <foreach collection="exprList" item="expr" separator=",">
+            (#{expr.empId}, #{expr.begin}, #{expr.end}, #{expr.company}, #{expr.job})
+        </foreach>
+    </insert>
+
+    <!-- 根据员工 ID 列表批量删除工作经历 -->
+    <delete id="deleteByEmpIds">
+        delete from emp_expr where emp_id in
+        <foreach collection="empIds" item="empId" open="(" separator="," close=")">
+            #{empId}
+        </foreach>
+    </delete>
+
+</mapper>

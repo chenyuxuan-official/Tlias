@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- 1. 应用名称 -->
+    <property name="APP_NAME" value="app"/>
+
+    <!-- 2. 日志输出格式：
+         %d{yyyy-MM-dd HH:mm:ss.SSS}  时间
+         [%thread]                     线程名
+         %-5level                      日志级别（左对齐占5位）
+         %logger{36}                   类名（最长36字符）
+         %msg                          日志内容
+         %n                            换行
+    -->
+    <property name="LOG_PATTERN"
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"/>
+
+    <!-- 3. 控制台输出（开发环境用） -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+            <!-- Windows 控制台默认按 GBK 解码，这里必须与之一致，否则中文日志乱码 -->
+            <charset>GBK</charset>
+        </encoder>
+    </appender>
+
+    <!-- 4. 滚动文件输出（生产环境用）
+         按天滚动 + 单文件上限，自动清理旧日志 -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <!-- 滚动策略：按天切分 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 文件名格式：app.2026-08-23.0.log -->
+            <fileNamePattern>logs/${APP_NAME}.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <!-- 单个日志文件最大 10MB -->
+            <maxFileSize>10MB</maxFileSize>
+            <!-- 日志最多保留 30 天 -->
+            <maxHistory>30</maxHistory>
+            <!-- 所有日志文件总大小上限 1GB -->
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+
+    <!-- 5. 开发环境：只输出到控制台 -->
+    <springProfile name="dev">
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+        <!-- 只在控制台看 MyBatis 的 SQL -->
+        <logger name="com.shanfu.app.mapper" level="DEBUG"/>
+    </springProfile>
+
+    <!-- 6. 生产环境：控制台 + 文件 -->
+    <springProfile name="prod">
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="FILE"/>
+        </root>
+    </springProfile>
+
+    <!-- 7. 没有指定 profile 时的默认配置（控制台 + 文件） -->
+    <springProfile name="default">
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+        <logger name="com.shanfu.app.mapper" level="DEBUG"/>
+    </springProfile>
+
+</configuration>

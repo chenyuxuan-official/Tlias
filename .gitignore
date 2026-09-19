@@ -1,0 +1,10 @@
+# 系统 / 编辑器产生的垃圾文件
+.DS_Store
+Thumbs.db
+desktop.ini
+*.log
+
+# 兜底：任何目录下都不要提交含真实密码的文件
+**/application-dev.properties
+**/阿里云密码.txt
+**/_pdf_clazz.txt

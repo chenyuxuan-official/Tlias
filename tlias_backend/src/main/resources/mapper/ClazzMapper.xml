@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.shanfu.app.mapper.ClazzMapper">
+
+    <sql id="clazzQueryCondition">
+        <if test="name != null and name != ''">
+            and c.name like concat('%', #{name}, '%')
+        </if>
+        <if test="begin != null">
+            and c.begin_date &gt;= #{begin}
+        </if>
+        <if test="end != null">
+            and c.end_date &lt;= #{end}
+        </if>
+    </sql>
+
+    <!-- 条件分页查询班级列表 -->
+    <select id="list" resultType="com.shanfu.app.pojo.Clazz">
+        select c.*, e.name masterName
+        from clazz as c
+                 left join emp as e on c.master_id = e.id
+        <where>
+            <include refid="clazzQueryCondition"/>
+        </where>
+        order by c.create_time desc
+    </select>
+
+    <!-- 删除班级 -->
+    <delete id="deleteById" parameterType="java.lang.Integer">
+        delete from clazz where id = #{id}
+    </delete>
+
+    <!-- 根据 ID 查询班级详情 -->
+    <select id="getById" resultType="com.shanfu.app.pojo.Clazz">
+        select c.*, e.name masterName
+        from clazz as c
+                 left join emp as e on c.master_id = e.id
+        where c.id = #{id}
+    </select>
+
+    <!-- 修改班级信息 -->
+    <update id="updateByPrimaryKey">
+        update clazz
+        <set>
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="room != null and room != ''">room = #{room},</if>
+            <if test="beginDate != null">begin_date = #{beginDate},</if>
+            <if test="endDate != null">end_date = #{endDate},</if>
+            <if test="masterId != null">master_id = #{masterId},</if>
+            <if test="subject != null">subject = #{subject},</if>
+            update_time = #{updateTime}
+        </set>
+        where id = #{id}
+    </update>
+
+    <!-- 查询所有班级 -->
+    <select id="findAll" resultType="com.shanfu.app.pojo.Clazz">
+        select id, name
+        from clazz
+        order by create_time desc
+    </select>
+
+</mapper>

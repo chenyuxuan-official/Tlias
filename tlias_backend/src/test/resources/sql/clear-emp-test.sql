@@ -1,0 +1,2 @@
+DELETE FROM emp;
+DELETE FROM dept;

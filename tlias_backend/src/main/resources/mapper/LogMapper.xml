@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shanfu.app.mapper.LogMapper">
+
+    <!-- 查询操作日志：left join emp 表取出操作人姓名 -->
+    <!-- 开启了 map-underscore-to-camel-case，operate_emp_id 会自动映射到 operateEmpId -->
+    <select id="list" resultType="com.shanfu.app.pojo.OperateLog">
+        select l.*, e.name operateEmpName
+        from operate_log l
+                 left join emp e on l.operate_emp_id = e.id
+        order by l.operate_time desc
+    </select>
+
+</mapper>
